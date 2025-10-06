@@ -191,41 +191,51 @@ export function Settings({ onClose }: SettingsProps) {
               </div>
 
               <div className="space-y-4">
-                {Object.entries(providers).map(([providerId, provider]) => (
-                  <div key={providerId}>
-                    <Label className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${
-                        provider.enabled && apiKeys[providerId] ? 'bg-green-500' : 'bg-gray-400'
-                      }`} />
-                      {provider.name} API Key
-                    </Label>
-                    <div className="flex gap-2 mt-2">
-                      <Input
-                        type={showApiKeys[providerId] ? 'text' : 'password'}
-                        placeholder={`Enter ${provider.name} API key`}
-                        value={tempApiKeys[providerId as keyof typeof tempApiKeys] || ''}
-                        onChange={(e) => 
-                          setTempApiKeys(prev => ({ ...prev, [providerId]: e.target.value }))
-                        }
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleToggleApiKeyVisibility(providerId)}
-                      >
-                        {showApiKeys[providerId] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeApiKey(providerId)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+  {Object.entries(providers).map(([providerId, provider]) => {
+    const key = providerId as keyof typeof apiKeys; // ✅ Type-safe key
+
+    return (
+      <div key={providerId}>
+        <Label className="flex items-center gap-2">
+          <div
+            className={`w-2 h-2 rounded-full ${
+              provider.enabled && apiKeys[key] ? 'bg-green-500' : 'bg-gray-400'
+            }`}
+          />
+          {provider.name} API Key
+        </Label>
+
+        <div className="flex gap-2 mt-2">
+          <Input
+            type={showApiKeys[key] ? 'text' : 'password'}
+            placeholder={`Enter ${provider.name} API key`}
+            value={tempApiKeys[key] || ''}
+            onChange={(e) =>
+              setTempApiKeys((prev) => ({ ...prev, [key]: e.target.value }))
+            }
+          />
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleToggleApiKeyVisibility(key)}
+          >
+            {showApiKeys[key] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => removeApiKey(key)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
 
               <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                 <h4 className="font-medium mb-2">Security Notice</h4>
