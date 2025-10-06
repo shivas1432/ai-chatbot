@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Image, Wrench, Store, Smartphone, Palette, Star, Sparkles, Zap, Calendar, Mail, Check, Cake as Shake } from 'lucide-react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { X, Image, Wrench, Store, Smartphone, Palette, Calendar, Mail, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Neumorphic } from '@/components/ui/neumorphic';
@@ -20,13 +20,25 @@ interface CountdownTime {
   seconds: number;
 }
 
+interface ModalDataItem {
+  title: string;
+  emoji: string;
+  description: string;
+  features: string[];
+  targetDate?: string | null;
+  ctaText: string;
+  gradient: string;
+  iconColor: string;
+  available?: boolean;
+}
+
 export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps) {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [timeLeft, setTimeLeft] = useState<CountdownTime>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  const modalData = {
+  const modalData: Record<string, ModalDataItem> = {
     'text-to-image': {
       title: 'AI Image Studio',
       emoji: '🎨',
@@ -90,7 +102,6 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
         'Auto Updates',
         'Native App Feel'
       ],
-      targetDate: null,
       ctaText: 'Install Now',
       gradient: 'from-indigo-500/20 to-purple-500/20',
       iconColor: 'text-indigo-500',
@@ -108,7 +119,6 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
         'Swipe Navigation',
         'Adaptive Layout'
       ],
-      targetDate: null,
       ctaText: 'Learn More',
       gradient: 'from-orange-500/20 to-red-500/20',
       iconColor: 'text-orange-500',
@@ -126,7 +136,6 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
         'Font Customization (Coming Soon)',
         'Layout Preferences'
       ],
-      targetDate: null,
       ctaText: 'Customize Now',
       gradient: 'from-pink-500/20 to-rose-500/20',
       iconColor: 'text-pink-500',
@@ -138,7 +147,6 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
 
   const calculateTimeLeft = (targetDate: string): CountdownTime => {
     const difference = +new Date(targetDate) - +new Date();
-    
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -147,30 +155,23 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
         seconds: Math.floor((difference / 1000) % 60)
       };
     }
-    
     return { days: 0, hours: 0, minutes: 0, seconds: 0 };
   };
 
   useEffect(() => {
     if (data.targetDate) {
-      const timer = setInterval(() => {
-        setTimeLeft(calculateTimeLeft(data.targetDate!));
-      }, 1000);
-
+      const timer = setInterval(() => setTimeLeft(calculateTimeLeft(data.targetDate!)), 1000);
       return () => clearInterval(timer);
     }
   }, [data.targetDate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!email.trim()) {
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
       return;
     }
-
-    // Simulate submission
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
@@ -179,12 +180,12 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
     }, 2000);
   };
 
-  const modalVariants = {
+  const modalVariants: Variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
       opacity: 1, 
       scale: 1,
-      transition: { duration: 0.3, ease: "easeOut" }
+      transition: { duration: 0.3, ease: ["easeOut"] } // ✅ Framer Motion safe
     },
     exit: { 
       opacity: 0, 
@@ -294,7 +295,7 @@ export function ComingSoonModal({ isOpen, onClose, type }: ComingSoonModalProps)
                 ))}
               </div>
 
-              {/* Countdown Timer (for coming soon features) */}
+              {/* Countdown Timer */}
               {data.targetDate && (
                 <div className="mb-8">
                   <h3 className="text-center text-lg font-semibold mb-4 flex items-center justify-center gap-2">
