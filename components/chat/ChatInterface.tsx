@@ -82,9 +82,6 @@ export function ChatInterface() {
       conversationId,
     });
 
-    // Generate unique assistant message ID
-    const assistantMessageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
     try {
       // Get API key for current provider
       const apiKey = apiKeys[currentProvider as keyof typeof apiKeys];
@@ -124,6 +121,7 @@ export function ChatInterface() {
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       let assistantContent = '';
+      let assistantMessageId = '';
       let messageCreated = false;
 
       if (!reader) {
@@ -158,14 +156,23 @@ export function ChatInterface() {
                   
                   // Create assistant message only when we have actual content
                   if (!messageCreated) {
+                    // Add the message without specifying ID (let the store generate it)
                     addMessage({
-                      id: assistantMessageId,
                       role: 'assistant',
                       content: assistantContent,
                       conversationId,
                     });
                     messageCreated = true;
-                  } else {
+                    
+                    // Get the ID of the message we just created by finding the latest assistant message
+                    const updatedConversation = conversations.find(c => c.id === conversationId);
+                    if (updatedConversation) {
+                      const assistantMessages = updatedConversation.messages.filter(m => m.role === 'assistant');
+                      if (assistantMessages.length > 0) {
+                        assistantMessageId = assistantMessages[assistantMessages.length - 1].id;
+                      }
+                    }
+                  } else if (assistantMessageId) {
                     // Update the existing message
                     updateMessage(assistantMessageId, assistantContent);
                   }
