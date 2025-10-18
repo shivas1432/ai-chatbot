@@ -24,11 +24,17 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onSettingsClick }: SidebarProps) {
-  const { createConversation, sidebarOpen, toggleSidebar } = useChatStore();
+  // Remove toggleSidebar from destructuring since it doesn't exist in the store
+  const { createConversation, sidebarOpen, setSidebarOpen } = useChatStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Create a local toggleSidebar function
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
