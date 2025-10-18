@@ -91,14 +91,23 @@
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Mobile optimization */
+    font-size: 16px; /* Prevents zoom on iOS */
+    line-height: 1.5;
   }
   
-  /* Professional Typography Classes */
+  /* Professional Typography Classes - Mobile Responsive */
   .font-display {
     font-family: 'Playfair Display', 'Times New Roman', serif;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      font-size: 0.95em;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+    }
   }
   
   .font-heading {
@@ -106,6 +115,12 @@
     font-weight: 600;
     letter-spacing: -0.01em;
     line-height: 1.2;
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      font-size: 0.95em;
+      letter-spacing: -0.005em;
+      line-height: 1.25;
+    }
   }
   
   .font-body {
@@ -113,6 +128,11 @@
     font-weight: 400;
     letter-spacing: -0.005em;
     line-height: 1.6;
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      font-size: 0.95em;
+      line-height: 1.55;
+    }
   }
   
   .font-elegant {
@@ -120,13 +140,25 @@
     font-weight: 400;
     letter-spacing: 0.01em;
     line-height: 1.7;
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      font-size: 0.95em;
+      line-height: 1.65;
+    }
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Mobile Optimized */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px; /* Thinner on mobile */
+  height: 4px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 }
 
 ::-webkit-scrollbar-track {
@@ -195,10 +227,84 @@
     touch-action: manipulation;
   }
   
-  /* Improved tap targets */
+  /* Improved tap targets for mobile */
   button, a, [role="button"] {
     min-height: 44px;
     min-width: 44px;
+  }
+  
+  /* Better text sizing for mobile */
+  body {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Mobile input optimization */
+  input, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Reduce motion on mobile for performance */
+  .animate-float {
+    animation-duration: 4s;
+  }
+  
+  /* Mobile spacing optimizations */
+  .mobile-spacing {
+    padding: 0.75rem;
+  }
+  
+  /* Mobile card adjustments */
+  .mobile-card {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  /* Mobile text adjustments */
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  
+  .mobile-text-base {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* Mobile header adjustments */
+  .mobile-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  
+  .font-display {
+    font-size: 0.9em;
+  }
+  
+  .font-heading {
+    font-size: 0.9em;
+  }
+  
+  .font-body {
+    font-size: 0.9em;
+  }
+  
+  /* Tighter spacing for very small screens */
+  .xs-tight {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  /* Smaller buttons for very small screens */
+  button {
+    min-height: 40px;
+    min-width: 40px;
   }
 }
 
@@ -249,6 +355,17 @@
   transform: translateY(0);
 }
 
+/* Mobile-specific interactive elements */
+@media (max-width: 768px) {
+  .interactive:hover {
+    transform: none; /* Disable hover effects on mobile */
+  }
+  
+  .interactive:active {
+    transform: scale(0.98);
+  }
+}
+
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -271,6 +388,49 @@
   }
 }
 
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+  body {
+    font-size: 14px;
+  }
+  
+  .landscape-compact {
+    padding: 0.5rem;
+  }
+  
+  /* Reduce vertical spacing in landscape */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari */
+  input, textarea {
+    font-size: 16px; /* Prevents zoom */
+    border-radius: 0; /* Removes default border radius */
+  }
+  
+  /* Fix for iOS Safari viewport units */
+  .ios-full-height {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Android Chrome specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* Android Chrome */
+  .android-full-height {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+  }
+}
+
 /* Print styles */
 @media print {
   .no-print {
@@ -282,4 +442,29 @@
     color: black !important;
     box-shadow: none !important;
   }
+}
+
+/* Custom utilities for mobile */
+@layer utilities {
+  .text-mobile-xs { font-size: 0.75rem; line-height: 1rem; }
+  .text-mobile-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-mobile-base { font-size: 1rem; line-height: 1.5rem; }
+  .text-mobile-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-mobile-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  
+  .p-mobile-xs { padding: 0.25rem; }
+  .p-mobile-sm { padding: 0.5rem; }
+  .p-mobile-base { padding: 0.75rem; }
+  .p-mobile-lg { padding: 1rem; }
+  
+  .gap-mobile-xs { gap: 0.25rem; }
+  .gap-mobile-sm { gap: 0.5rem; }
+  .gap-mobile-base { gap: 0.75rem; }
+  .gap-mobile-lg { gap: 1rem; }
+  
+  /* Safe area support for mobile */
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-left { padding-left: env(safe-area-inset-left); }
+  .safe-right { padding-right: env(safe-area-inset-right); }
 }

@@ -233,25 +233,28 @@ export function ChatInterface() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="border-b border-border p-4">
+      {/* Header - Mobile Optimized */}
+      <div className="border-b border-border p-3 sm:p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-display">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-2xl font-display font-semibold truncate">
               {activeConversation?.title || 'New Chat'}
             </h1>
-            <div className="flex items-center gap-2 mt-1 font-body">
-              <span className="text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 mt-0.5 sm:mt-1 font-body">
+              <span className="text-xs sm:text-sm text-muted-foreground font-medium">
                 {activeConversation?.messages.length || 0} messages
               </span>
-              <span className="text-xs text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground capitalize font-medium">
-                {currentProvider} - {currentModel}
+              <span className="text-xs text-muted-foreground hidden sm:inline">•</span>
+              <span className="text-xs sm:text-sm text-muted-foreground capitalize font-medium truncate">
+                <span className="hidden sm:inline">{currentProvider} - </span>
+                {currentModel}
               </span>
             </div>
           </div>
           
-          <ProviderSelector />
+          <div className="ml-3 flex-shrink-0">
+            <ProviderSelector />
+          </div>
         </div>
       </div>
 
@@ -260,28 +263,28 @@ export function ChatInterface() {
         <MessageList />
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-border p-4">
+      {/* Input Area - Mobile Optimized */}
+      <div className="border-t border-border p-3 sm:p-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         {/* File Attachments */}
         {attachedFiles.length > 0 && (
-          <div className="mb-4">
+          <div className="mb-3">
             <div className="flex flex-wrap gap-2">
               {attachedFiles.map((file, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex items-center gap-2 bg-muted/50 rounded-lg px-3 py-2"
+                  className="flex items-center gap-2 bg-muted/50 rounded-lg px-2.5 py-1.5"
                 >
-                  <FileText className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-sm font-medium truncate max-w-32">
+                  <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="text-xs font-medium truncate max-w-24 sm:max-w-32">
                     {file.name}
                   </span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => removeFile(index)}
-                    className="h-4 w-4 p-0 hover:bg-destructive/20"
+                    className="h-3.5 w-3.5 p-0 hover:bg-destructive/20"
                   >
                     ×
                   </Button>
@@ -291,11 +294,11 @@ export function ChatInterface() {
           </div>
         )}
         
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Neumorphic variant="inset" className="p-4 bg-muted/30">
-            <div className="flex gap-3 items-end">
-              {/* Attachment Options */}
-              <div className="flex items-center gap-1">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <Neumorphic variant="inset" className="p-3 sm:p-4 bg-muted/30">
+            <div className="flex gap-2 sm:gap-3 items-end">
+              {/* Attachment Options - Mobile Optimized */}
+              <div className="flex items-center gap-0.5 sm:gap-1 flex-shrink-0">
                 <TooltipProvider>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -303,12 +306,12 @@ export function ChatInterface() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 hover:bg-accent"
+                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-accent"
                       >
                         <Paperclip className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-48">
+                    <DropdownMenuContent align="start" className="w-44 sm:w-48">
                       {attachmentOptions.map((option) => (
                         <DropdownMenuItem
                           key={option.label}
@@ -318,7 +321,7 @@ export function ChatInterface() {
                               fileInputRef.current.click();
                             }
                           }}
-                          className="flex items-center gap-3"
+                          className="flex items-center gap-3 text-sm"
                         >
                           <option.icon className={`h-4 w-4 ${option.color}`} />
                           <span>{option.label}</span>
@@ -327,13 +330,14 @@ export function ChatInterface() {
                     </DropdownMenuContent>
                   </DropdownMenu>
 
+                  {/* Camera button - hide on very small screens */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 hover:bg-accent"
+                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-accent hidden xs:flex"
                       >
                         <Camera className="h-4 w-4" />
                       </Button>
@@ -343,13 +347,14 @@ export function ChatInterface() {
                     </TooltipContent>
                   </Tooltip>
 
+                  {/* Emoji button - hide on small screens */}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 hover:bg-accent"
+                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-accent hidden sm:flex"
                       >
                         <Smile className="h-4 w-4" />
                       </Button>
@@ -369,14 +374,15 @@ export function ChatInterface() {
                 placeholder={
                   isStreaming 
                     ? "AI is responding..." 
-                    : "Type your message here. Press Ctrl+Enter to insert a line break..."
+                    : "Type your message..."
                 }
                 disabled={isStreaming}
-                className="flex-1 min-h-[60px] max-h-[200px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none font-body"
+                className="flex-1 min-h-[44px] max-h-[120px] sm:min-h-[60px] sm:max-h-[200px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none font-body text-sm sm:text-base leading-relaxed"
                 rows={1}
               />
               
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+                {/* Voice button - hide on very small screens */}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -384,7 +390,7 @@ export function ChatInterface() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 hover:bg-accent"
+                        className="h-8 w-8 sm:h-9 sm:w-9 p-0 hover:bg-accent hidden xs:flex"
                       >
                         <Mic className="h-4 w-4" />
                       </Button>
@@ -401,7 +407,7 @@ export function ChatInterface() {
                     size="sm"
                     variant="destructive"
                     onClick={handleStop}
-                    className="h-8 w-8 p-0"
+                    className="h-9 w-9 sm:h-10 sm:w-10 p-0 flex-shrink-0"
                   >
                     <Square className="h-4 w-4" />
                   </Button>
@@ -410,7 +416,7 @@ export function ChatInterface() {
                     type="submit"
                     size="sm"
                     disabled={!input.trim()}
-                    className="h-8 w-8 p-0 bg-[#007AFF] hover:bg-[#007AFF]/90 disabled:bg-muted"
+                    className="h-9 w-9 sm:h-10 sm:w-10 p-0 bg-[#007AFF] hover:bg-[#007AFF]/90 disabled:bg-muted flex-shrink-0"
                   >
                     <Send className="h-4 w-4" />
                   </Button>
@@ -428,16 +434,20 @@ export function ChatInterface() {
             className="hidden"
           />
 
+          {/* Help text - responsive */}
           <div className="flex items-center justify-between text-xs text-muted-foreground font-body">
-            <span>
+            <span className="hidden sm:block">
               Press <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Enter</kbd> to send, 
               <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs ml-1">Shift+Enter</kbd> for new line
+            </span>
+            <span className="sm:hidden text-xs">
+              Tap send to submit
             </span>
             
             {isStreaming && (
               <div className="flex items-center gap-2">
                 <Loader2 className="h-3 w-3 animate-spin" />
-                <span>AI is thinking...</span>
+                <span className="text-xs">AI is thinking...</span>
               </div>
             )}
           </div>
