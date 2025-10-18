@@ -27,7 +27,7 @@ export function MessageList() {
         >
           {/* Hero Icon - Mobile Optimized */}
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#007AFF]/20 to-[#007AFF]/10 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-            <span className="text-2xl sm:text-4xl">🤖</span>
+            <img src="/icon.png" alt="AI Buddy" className="w-8 h-8 sm:w-10 sm:h-10" />
           </div>
           
           {/* Welcome Title - Mobile Responsive */}
@@ -37,7 +37,7 @@ export function MessageList() {
           
           {/* Description - Mobile Optimized */}
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 font-body leading-relaxed">
-            Your intelligent chat companion is ready to help with any question, task, or creative project.
+            
             <span className="hidden sm:inline"> What would you like to explore today?</span>
           </p>
           
@@ -49,7 +49,7 @@ export function MessageList() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="font-medium mb-1 font-heading text-sm sm:text-base flex items-center gap-2">
-                <span className="text-base sm:text-lg">💡</span>
+                <img src="/icon.png" alt="Creative help" className="w-5 h-5 sm:w-6 sm:h-6" />
                 Get creative help
               </div>
               <div className="text-muted-foreground font-body text-xs sm:text-sm leading-relaxed">
@@ -63,7 +63,7 @@ export function MessageList() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="font-medium mb-1 font-heading text-sm sm:text-base flex items-center gap-2">
-                <span className="text-base sm:text-lg">🔍</span>
+                <img src="/icon.png" alt="Ask questions" className="w-5 h-5 sm:w-6 sm:h-6" />
                 Ask questions
               </div>
               <div className="text-muted-foreground font-body text-xs sm:text-sm leading-relaxed">
@@ -77,7 +77,7 @@ export function MessageList() {
               whileTap={{ scale: 0.98 }}
             >
               <div className="font-medium mb-1 font-heading text-sm sm:text-base flex items-center gap-2">
-                <span className="text-base sm:text-lg">⚡</span>
+                <img src="/icon.png" alt="Coding help" className="w-5 h-5 sm:w-6 sm:h-6" />
                 Get coding help
               </div>
               <div className="text-muted-foreground font-body text-xs sm:text-sm leading-relaxed">
@@ -88,10 +88,7 @@ export function MessageList() {
 
           {/* Additional Mobile Tip */}
           <div className="mt-4 sm:mt-6">
-            <p className="text-xs text-muted-foreground font-body">
-              <span className="sm:hidden">Tap any example above to get started</span>
-              <span className="hidden sm:inline">Click any example above to get started</span>
-            </p>
+          
           </div>
         </motion.div>
       </div>

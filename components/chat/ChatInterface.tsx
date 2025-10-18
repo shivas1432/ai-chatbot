@@ -82,16 +82,10 @@ export function ChatInterface() {
       conversationId,
     });
 
-    try {
-      // Create assistant message
-      const assistantMessageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      addMessage({
-        role: 'assistant',
-        content: '',
-        conversationId,
-      });
+    // Generate unique assistant message ID
+    const assistantMessageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+    try {
       // Get API key for current provider
       const apiKey = apiKeys[currentProvider as keyof typeof apiKeys];
       
@@ -130,6 +124,7 @@ export function ChatInterface() {
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       let assistantContent = '';
+      let messageCreated = false;
 
       if (!reader) {
         throw new Error('No response body');
@@ -161,8 +156,19 @@ export function ChatInterface() {
                 if (content) {
                   assistantContent += content;
                   
-                  // Update the assistant message
-                  updateMessage(assistantMessageId, assistantContent);
+                  // Create assistant message only when we have actual content
+                  if (!messageCreated) {
+                    addMessage({
+                      id: assistantMessageId,
+                      role: 'assistant',
+                      content: assistantContent,
+                      conversationId,
+                    });
+                    messageCreated = true;
+                  } else {
+                    // Update the existing message
+                    updateMessage(assistantMessageId, assistantContent);
+                  }
                 }
               } catch (error) {
                 console.warn('Failed to parse streaming chunk:', error);

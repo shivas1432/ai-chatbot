@@ -392,28 +392,28 @@ export function Sidebar({ onSettingsClick }: SidebarProps) {
                 </div>
 
                 {/* Content */}
-                <div className="relative">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-base font-bold">Upgrade to</h3>
-                    <span className="px-2.5 py-0.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-full shadow-lg">
-                      PRO
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-                    Unlock premium tools, priority support, enhanced features.
-                  </p>
+               <div className="relative">
+  <div className="flex items-center gap-2 mb-1">
+    <h3 className="text-sm font-bold">Upgrade to</h3>
+    <span className="px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-full shadow-lg">
+      PRO
+    </span>
+  </div>
+  <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
+    Unlock premium tools, priority support, enhanced features.
+  </p>
 
-                  {/* CTA Button */}
-                  <motion.button
-                    className="w-full py-2.5 px-4 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white text-sm font-semibold rounded-lg shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 transition-all"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Zap className="w-4 h-4" />
-                    Don't Miss Out
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </motion.button>
-                </div>
+  {/* CTA Button */}
+  <motion.button
+    className="w-full py-2 px-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white text-xs font-semibold rounded-lg shadow-lg shadow-orange-500/30 flex items-center justify-center gap-1.5 transition-all"
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+  >
+    <Zap className="w-3.5 h-3.5" />
+    Don't Miss Out
+    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+  </motion.button>
+</div>
               </motion.div>
 
               {/* Bottom Actions */}
