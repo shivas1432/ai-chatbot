@@ -12,7 +12,8 @@ import {
   Zap,
   ArrowUpRight,
   X,
-  Lock
+  Lock,
+  ChevronDown
 } from 'lucide-react';
 import { useChatStore } from '@/stores/chatStore';
 import { Button } from '@/components/ui/button';
@@ -24,16 +25,28 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onSettingsClick }: SidebarProps) {
-  // Remove toggleSidebar from destructuring since it doesn't exist in the store
   const { createConversation, sidebarOpen, setSidebarOpen } = useChatStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [upgradeExpanded, setUpgradeExpanded] = useState(false);
 
-  // Create a local toggleSidebar function
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const toggleUpgrade = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setUpgradeExpanded(!upgradeExpanded);
+  };
+
+  const handleUpgradeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Upgrade action triggered');
+    // Add your upgrade logic here
   };
 
   useEffect(() => {
@@ -349,72 +362,84 @@ export function Sidebar({ onSettingsClick }: SidebarProps) {
               </div>
             </div>
 
-            {/* Premium Upgrade Section */}
+            {/* Expandable Premium Upgrade Section */}
             <div className="p-4 border-t border-border dark:border-white/5 relative z-10">
-              <motion.div
-                className="relative overflow-hidden rounded-2xl p-5 cursor-pointer group bg-orange-50 dark:bg-transparent"
+              <div
+                className="relative overflow-hidden rounded-2xl bg-orange-50 dark:bg-transparent"
                 style={{
                   background: 'var(--premium-gradient, linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(249, 115, 22, 0.05) 50%, rgba(234, 88, 12, 0.1) 100%))',
                 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                {/* Animated gradient background - only dark mode */}
-                <motion.div
-                  className="absolute inset-0 opacity-0 dark:opacity-30"
-                  animate={{
-                    background: [
-                      'radial-gradient(circle at 0% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 100% 100%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 0% 100%, rgba(217, 70, 12, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 100% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 0% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
-                    ],
-                  }}
-                  transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-                />
-
-                {/* Crown icon with glow */}
-                <div className="relative mb-3">
+                {/* Toggle Header */}
+                <button
+                  onClick={toggleUpgrade}
+                  className="w-full flex items-center justify-between p-3 hover:bg-black/5 dark:hover:bg-white/5 transition-colors rounded-2xl"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg">
+                      <Crown className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold">Upgrade to</span>
+                      <span className="px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-full shadow-lg">
+                        PRO
+                      </span>
+                    </div>
+                  </div>
+                  
                   <motion.div
-                    className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-2xl"
-                    animate={{
-                      boxShadow: [
-                        '0 0 20px rgba(234, 88, 12, 0.3)',
-                        '0 0 40px rgba(234, 88, 12, 0.5)',
-                        '0 0 20px rgba(234, 88, 12, 0.3)',
-                      ],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
+                    animate={{ rotate: upgradeExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    className="flex-shrink-0"
                   >
-                    <Crown className="w-6 h-6 text-white" />
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   </motion.div>
-                </div>
+                </button>
 
-                {/* Content */}
-               <div className="relative">
-  <div className="flex items-center gap-2 mb-1">
-    <h3 className="text-sm font-bold">Upgrade to</h3>
-    <span className="px-2 py-0.5 bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs font-bold rounded-full shadow-lg">
-      PRO
-    </span>
-  </div>
-  <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
-    Unlock premium tools, priority support, enhanced features.
-  </p>
+                {/* Expanded Content */}
+                <AnimatePresence>
+                  {upgradeExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-3 pb-3">
+                        {/* Animated gradient background */}
+                        <motion.div
+                          className="absolute inset-0 opacity-0 dark:opacity-20 rounded-2xl pointer-events-none"
+                          animate={{
+                            background: [
+                              'radial-gradient(circle at 0% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
+                              'radial-gradient(circle at 100% 100%, rgba(251, 146, 60, 0.3) 0%, transparent 50%)',
+                              'radial-gradient(circle at 0% 100%, rgba(217, 70, 12, 0.3) 0%, transparent 50%)',
+                              'radial-gradient(circle at 100% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
+                              'radial-gradient(circle at 0% 0%, rgba(234, 88, 12, 0.3) 0%, transparent 50%)',
+                            ],
+                          }}
+                          transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+                        />
 
-  {/* CTA Button */}
-  <motion.button
-    className="w-full py-2 px-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white text-xs font-semibold rounded-lg shadow-lg shadow-orange-500/30 flex items-center justify-center gap-1.5 transition-all"
-    whileHover={{ scale: 1.02 }}
-    whileTap={{ scale: 0.98 }}
-  >
-    <Zap className="w-3.5 h-3.5" />
-    Don't Miss Out
-    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-  </motion.button>
-</div>
-              </motion.div>
+                        <p className="text-xs text-muted-foreground mb-3 leading-relaxed relative z-10">
+                          Unlock premium tools, priority support, enhanced features.
+                        </p>
+
+                        {/* Upgrade Button */}
+                        <button
+                          onClick={handleUpgradeClick}
+                          className="w-full py-2 px-3 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white text-xs font-semibold rounded-lg shadow-lg shadow-orange-500/30 flex items-center justify-center gap-1.5 transition-all relative z-10 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <Zap className="w-3.5 h-3.5" />
+                          Don't Miss Out
+                          <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Bottom Actions */}
               <div className="mt-4 space-y-1">
